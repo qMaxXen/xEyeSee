@@ -6,7 +6,7 @@
 Lightweight Python script that displays a standalone eye measuring projector, made as a Linux alternative to the Windows-only [Jingle-EyeSee](https://github.com/DuncanRuns/Jingle-EyeSee-Plugin).
 
 <details>
-  <summary>Demo Video</summary>
+  <summary>Demo Video [Click to expand]</summary>
 
   https://github.com/user-attachments/assets/9a1762d9-7bbf-4db4-beb4-8959d91bda0b
 
