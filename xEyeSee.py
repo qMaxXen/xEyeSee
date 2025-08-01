@@ -12,7 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 DEBUG_MODE = False # Set to True to enable debug prints
 
 # Program Version
-APP_VERSION = "v1.0.0"
+APP_VERSION = "v1.0.1"
 
 DEFAULT_ZOOM = (320, 16384, 800, -7652)
 
@@ -232,6 +232,8 @@ class MinecraftViewer(QtWidgets.QWidget):
                 self.debug("Resolution matched. Showing live preview.")
             self._recalc_and_position()
             self.show()
+            QtCore.QTimer.singleShot(50, self._recalc_and_position)
+        
         else:
             if self.active:
                 self.active = False
