@@ -111,6 +111,11 @@ PREVIEW_H = 600
 
 OVERLAY_PATH = os.path.join(os.path.dirname(__file__), "overlay.png")
 
+if not os.path.isfile(OVERLAY_PATH):
+    print("Error: overlay.png is missing! Redownload the program from:")
+    print("  https://github.com/qMaxXen/xEyeSee/releases")
+    sys.exit(1)
+
 class MinecraftViewer(QtWidgets.QWidget):
     def __init__(self, x, y, w, h, fps=20):
         super().__init__()
