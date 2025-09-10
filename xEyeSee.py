@@ -10,15 +10,15 @@ from mss import mss
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 DEBUG_MODE = False # Set to True to enable debug prints
+GEOMETRY_POLL_MS = 200   # how often to check Minecraft geometry (ms). Default is 0.2s (200 ms). Higher = lower cpu usage.
 
 # Program Version
-APP_VERSION = "v1.0.1"
+APP_VERSION = "v1.0.2"
 
 DEFAULT_ZOOM = (320, 16384, 800, -7652)
 
 CONFIG_DIR = os.path.expanduser("~/.config/xEyeSee")
 CONFIG_PATH = os.path.join(CONFIG_DIR, "info.json")
-
 def get_latest_github_release_version():
     url = "https://api.github.com/repos/qMaxXen/xEyeSee/releases/latest"
     try:
@@ -38,47 +38,82 @@ def check_for_update(current_version):
 
 def load_or_init_config():
     os.makedirs(CONFIG_DIR, exist_ok=True)
+    data = {}
+
     if os.path.isfile(CONFIG_PATH):
         try:
             with open(CONFIG_PATH, "r") as f:
                 data = json.load(f)
-            geom = data.get("eyezoom_resolution", {})
-            return (
-                int(geom.get("zoom_w", DEFAULT_ZOOM[0])),
-                int(geom.get("zoom_h", DEFAULT_ZOOM[1])),
-                int(geom.get("zoom_x", DEFAULT_ZOOM[2])),
-                int(geom.get("zoom_y", DEFAULT_ZOOM[3])),
-            )
         except Exception:
-            pass
+            data = {}
 
-    print("Please enter your eyezoom resolution in the format WxH+X,Y")
-    print("For example: 320x16384+800,-7652")
-    print("  W = width (pixels)\n  H = height (pixels)\n  X = X offset (pixels)\n  Y = Y offset (pixels)\n")
-    resp = input(f"Enter resolution (press Enter for default {DEFAULT_ZOOM[0]}x{DEFAULT_ZOOM[1]}+{DEFAULT_ZOOM[2]},{DEFAULT_ZOOM[3]}): ").strip()
-    if not resp:
-        w, h, x, y = DEFAULT_ZOOM
+    geom = data.get("eyezoom_resolution")
+    fps_in_file = data.get("framerate", None)
+
+    if geom and all(k in geom for k in ("zoom_w", "zoom_h", "zoom_x", "zoom_y")) and isinstance(fps_in_file, int):
+        return (
+            int(geom.get("zoom_w", DEFAULT_ZOOM[0])),
+            int(geom.get("zoom_h", DEFAULT_ZOOM[1])),
+            int(geom.get("zoom_x", DEFAULT_ZOOM[2])),
+            int(geom.get("zoom_y", DEFAULT_ZOOM[3])),
+            int(fps_in_file),
+        )
+
+    if geom and all(k in geom for k in ("zoom_w", "zoom_h", "zoom_x", "zoom_y")):
+        w = int(geom.get("zoom_w", DEFAULT_ZOOM[0]))
+        h = int(geom.get("zoom_h", DEFAULT_ZOOM[1]))
+        x = int(geom.get("zoom_x", DEFAULT_ZOOM[2]))
+        y = int(geom.get("zoom_y", DEFAULT_ZOOM[3]))
+        print(f"Found existing eyezoom resolution in config: {w}x{h}+{x},{y}")
     else:
-        m = re.match(r"(\d+)x(\d+)\+(-?\d+),(-?\d+)", resp)
-        if m:
-            w, h, x, y = map(int, m.groups())
-        else:
-            print("Invalid format, using default.")
+        print("Please enter your eyezoom resolution in the format WxH+X,Y")
+        print("For example: 320x16384+800,-7652")
+        print("  W = width (pixels)\n  H = height (pixels)\n  X = X offset (pixels)\n  Y = Y offset (pixels)\n")
+        resp = input(f"Enter resolution (press Enter for default {DEFAULT_ZOOM[0]}x{DEFAULT_ZOOM[1]}+{DEFAULT_ZOOM[2]},{DEFAULT_ZOOM[3]}): ").strip()
+        if not resp:
             w, h, x, y = DEFAULT_ZOOM
+        else:
+            m = re.match(r"(\d+)x(\d+)\+(-?\d+),(-?\d+)", resp)
+            if m:
+                w, h, x, y = map(int, m.groups())
+            else:
+                print("Invalid format, using default.")
+                w, h, x, y = DEFAULT_ZOOM
+
+    if isinstance(fps_in_file, int) and fps_in_file > 0:
+        fps = fps_in_file
+        print(f"Found existing framerate in config: {fps} FPS")
+    else:
+        while True:
+            fps_resp = input("Enter the framerate at which the frame will be displayed (default 60): ").strip()
+            if fps_resp == "":
+                fps = 60
+                break
+            try:
+                fps = int(fps_resp)
+                if fps <= 0:
+                    print("Please enter a positive number for framerate.")
+                    continue
+                break
+            except ValueError:
+                print("Invalid input. Please enter a number (e.g. 30, 60).")
 
     with open(CONFIG_PATH, "w") as f:
         json.dump({
             "eyezoom_resolution": {
                 "zoom_w": w, "zoom_h": h,
                 "zoom_x": x, "zoom_y": y
-            }
+            },
+            "framerate": int(fps)
         }, f, indent=2)
 
+    print(f"Eyezoom resolution saved to {CONFIG_PATH}: {w}x{h}+{x},{y}")
+    print(f"Framerate saved: {fps} FPS")
+    print(f"You can change both these values in {CONFIG_PATH}.")
+    return w, h, x, y, int(fps)
 
-    print(f"Eyezoom resolution saved to {CONFIG_PATH}: {w}x{h}+{x},{y}")    
-    return w, h, x, y
 
-TARGET_W, TARGET_H, TARGET_X, TARGET_Y = load_or_init_config()
+TARGET_W, TARGET_H, TARGET_X, TARGET_Y, TARGET_FPS = load_or_init_config()
 
 if os.environ.get("XDG_SESSION_TYPE") == "wayland":
     print("Warning: Wayland session detected. xEyeSee only works on X11 for now.\n")
@@ -153,7 +188,7 @@ class MinecraftViewer(QtWidgets.QWidget):
         self.timer = QtCore.QTimer(self, timeout=self.update_frame)
         self.timer.start(int(1000 / fps))
         self.window_poll_timer = QtCore.QTimer(self, timeout=self.check_minecraft_geometry)
-        self.window_poll_timer.start(1000)
+        self.window_poll_timer.start(GEOMETRY_POLL_MS)
 
     def debug(self, *args):
         if DEBUG_MODE:
@@ -277,7 +312,7 @@ class MinecraftViewer(QtWidgets.QWidget):
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    viewer = MinecraftViewer(0, 0, 100, 100, fps=20)
+    viewer = MinecraftViewer(0, 0, 100, 100, fps=TARGET_FPS)
     viewer.hide()
     sys.exit(app.exec_())
 
