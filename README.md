@@ -18,14 +18,14 @@ Lightweight Python script that displays a standalone eye measuring projector, ma
 
 ## Installation
 
-1. Go to the [Releases](https://github.com/qMaxXen/xEyeSee/releases/tag/v1.0.1) section and download `xEyeSee-v1.0.1.tar.xz`.
+1. Go to the [Releases](https://github.com/qMaxXen/xEyeSee/releases/tag/v1.0.2) section and download `xEyeSee-v1.0.2.tar.xz`.
 2. Move the downloaded file to a convenient folder, then extract it:
    ```bash
-   tar -xf xEyeSee-v1.0.1.tar.xz
+   tar -xf xEyeSee-v1.0.2.tar.xz
    ```
 3. Install the required Python packages:
    ```bash
-   cd xEyeSee-v1.0.1
+   cd xEyeSee-v1.0.2
    pip3 install -r requirements.txt
    ```
 4. Install the required utilities:
@@ -46,6 +46,7 @@ Lightweight Python script that displays a standalone eye measuring projector, ma
   - Y = Y offset (pixels)
   - Your resolution gets saved to `~/.config/xEyeSee/info.json`.
 - Automatically displays the eye measuring projector when Minecraft is resized to eye zoom.
+- Customizable framerate at which the frame is displayed.
 - **Customizable overlay:** simply replace the included `overlay.png` with your own image overlay. (must be named `overlay.png`)
 
 ### Miscellaneous
