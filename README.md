@@ -31,7 +31,7 @@ Lightweight Python script that displays a standalone eye measuring projector, ma
 4. Install the required utilities:
   - Debian/Ubuntu: `sudo apt install wmctrl x11-utils`
   - Arch Linux: `sudo pacman -S wmctrl xorg-xwininfo`
-  - Fedora: `sudo dnf install wmctrl xorg-x11-utils`
+  - Fedora: `sudo dnf install xwininfo wmctrl`
 5. Run the script:
    ```bash
    python3 xEyeSee.py
