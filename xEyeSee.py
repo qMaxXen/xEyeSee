@@ -64,7 +64,9 @@ def load_or_init_config():
         h = int(geom.get("zoom_h", DEFAULT_ZOOM[1]))
         x = int(geom.get("zoom_x", DEFAULT_ZOOM[2]))
         y = int(geom.get("zoom_y", DEFAULT_ZOOM[3]))
-        print(f"Found existing eyezoom resolution in config: {w}x{h}+{x},{y}")
+        if DEBUG_MODE:
+            print(f"Found existing eyezoom resolution in config: {w}x{h}+{x},{y}")
+        
     else:
         print("Please enter your eyezoom resolution in the format WxH+X,Y")
         print("For example: 320x16384+800,-7652")
@@ -82,7 +84,8 @@ def load_or_init_config():
 
     if isinstance(fps_in_file, int) and fps_in_file > 0:
         fps = fps_in_file
-        print(f"Found existing framerate in config: {fps} FPS")
+        if DEBUG_MODE:
+            print(f"Found existing framerate in config: {fps} FPS")
     else:
         while True:
             fps_resp = input("Enter the framerate at which the frame will be displayed (default 60): ").strip()
@@ -138,7 +141,7 @@ if missing:
     print("Please install them, e.g.:")
     print("  sudo apt install wmctrl x11-utils # [Debian]")
     print("  sudo pacman -S wmctrl xorg-xwininfo # [Arch Linux]")
-    print("  sudo dnf install wmctrl xorg-x11-utils # [Fedora]")
+    print("  sudo dnf install xwininfo wmctrl # [Fedora]")
     sys.exit(1)
 
 
