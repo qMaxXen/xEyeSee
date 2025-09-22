@@ -28,6 +28,19 @@ Lightweight Python script that displays a standalone eye measuring projector, ma
    cd xEyeSee-v1.0.2
    pip3 install -r requirements.txt
    ```
+> [!TIP]
+> Getting the `PEP 668 (externally-managed-environment)` error after running `pip3 install -r requirements.txt`? Create a Python virtual environment:
+> ```bash
+> # Make sure you are in the extracted folder
+> python3 -m venv venv
+> source venv/bin/activate
+> pip install -r requirements.txt
+> ```
+> To run the script from the terminal without needing to enter the venv, use the Python binary inside the venv:
+> ```bash
+> /full/path/to/venv/bin/python <script>.py
+> ```
+
 4. Install the required utilities:
   - Debian/Ubuntu: `sudo apt install wmctrl x11-utils`
   - Arch Linux: `sudo pacman -S wmctrl xorg-xwininfo`
