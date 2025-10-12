@@ -6,7 +6,7 @@
 > [!IMPORTANT]
 > This script works **only on Linux (X11).**
 
-Lightweight Python script that displays a standalone eye measuring projector, made as a Linux alternative to the Windows-only [Jingle-EyeSee](https://github.com/DuncanRuns/Jingle-EyeSee-Plugin).
+A lightweight Python script that displays an eye measuring projector when you eye zoom, without needing OBS Studio. 
 
 <details>
   <summary>Demo Video [Click to expand]</summary>
