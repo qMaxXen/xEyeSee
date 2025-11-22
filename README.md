@@ -10,22 +10,21 @@ A lightweight Python script that displays an eye measuring projector when you ey
 
 <details>
   <summary>Demo Video [Click to expand]</summary>
-
-  https://github.com/user-attachments/assets/9a1762d9-7bbf-4db4-beb4-8959d91bda0b
+  
+  https://github.com/user-attachments/assets/c602660c-e822-4f47-b28d-1775656d1509
 
 </details>
 
-
 ## Installation
 
-1. Go to the [Releases](https://github.com/qMaxXen/xEyeSee/releases/tag/v1.0.2) section and download `xEyeSee-v1.0.2.tar.xz`.
+1. Go to the [Releases](https://github.com/qMaxXen/xEyeSee/releases/tag/v1.1.0) section and download `xEyeSee-v1.1.0.tar.xz`.
 2. Move the downloaded file to a convenient folder, then extract it:
    ```bash
-   tar -xf xEyeSee-v1.0.2.tar.xz
+   tar -xf xEyeSee-v1.1.0.tar.xz
    ```
 3. Install the required Python packages:
    ```bash
-   cd xEyeSee-v1.0.2
+   cd xEyeSee-v1.1.0
    pip3 install -r requirements.txt
    ```
 > [!TIP]
@@ -52,20 +51,28 @@ A lightweight Python script that displays an eye measuring projector when you ey
 
 ## Features
 
-- Asks for your **eye zoom resolution** (format: `WxH+X,Y`) on first launch. 
+- On first launch, you will be asked to enter your eye zoom resolution in the format `WxH+X,Y`: 
   - W = width (pixels)  
   - H = height (pixels)
   - X = X offset (pixels)
   - Y = Y offset (pixels)
-  - Your resolution gets saved to `~/.config/xEyeSee/info.json`.
-- Automatically displays the eye measuring projector when Minecraft is resized to eye zoom.
-- Customizable framerate at which the frame is displayed.
-- **Customizable overlay:** simply replace the included `overlay.png` with your own image overlay. (must be named `overlay.png`)
+- The eye measuring projector displays automatically when eye zoom is enabled.
+- You can customize the framerate of the eye measuring projector.
+- You can use a custom overlay by replacing the included `overlay.png` with your own overlay (must be named `overlay.png`).
+- You can use `xEyeSee-settings.py` to change settings, such as eye zoom resolution, framerate, debug mode and source width.
+- Zoom in further on the projector by setting the source width to `30`:
+  - Run `xEyeSee-settings.py` inside the main `xEyeSee` folder.
+  - Change `Source Width` to 30
+  - Go to: https://qmaxxen.github.io/overlay-gen/more-options/.
+  - Generate a custom overlay with 'Overlay width' set to 30.
+  - Download the `overlay.png` file and place it in the main xEyeSee folder. Make sure it is named `overlay.png`.
+  - Restart xEyeSee to apply the new overlay
+- The auto-updater notifies you when new versions are available and can download them automatically.
 
-### Miscellaneous
-- Built-in update checker: notifies you when a new version is available.
-- `DEBUG_MODE` option: toggle to show or hide console output.
+<img width="400" height="500" alt="image" src="https://github.com/user-attachments/assets/4af80daf-9aa4-4f79-868b-b0429fb74eb8" />
 
+## License
+xEyeSee is licensed under the MIT license. You can view the full license [here](https://raw.githubusercontent.com/qMaxXen/xEyeSee/refs/heads/main/LICENSE).
 
 ---
 
