@@ -177,10 +177,10 @@ def load_or_init_config():
             print(f"Found existing eye zoom resolution in config: {w}x{h}+{x},{y}")
         
     else:
-        print("Please resolution in the format WxH+X,Y")
+        print("Please enter your resolution in the format WxH+X,Y")
         print("For example: 320x16384+800,-7652")
         print("  W = width (pixels)\n  H = height (pixels)\n  X = X offset (pixels)\n  Y = Y offset (pixels)\n")
-        resp = input(f"Enter your eye zoom resolution (press Enter for default {DEFAULT_ZOOM[0]}x{DEFAULT_ZOOM[1]}+{DEFAULT_ZOOM[2]},{DEFAULT_ZOOM[3]}): ").strip()
+        resp = input(f"Enter resolution (press Enter for default {DEFAULT_ZOOM[0]}x{DEFAULT_ZOOM[1]}+{DEFAULT_ZOOM[2]},{DEFAULT_ZOOM[3]}): ").strip()
         if not resp:
             w, h, x, y = DEFAULT_ZOOM
         else:
