@@ -6,7 +6,6 @@ __pycache__/
 .DS_Store
 *.swp
 *.zip
-requirements.txt
 versions/
 xEyeSee-v*.tar.xz
 xEyeSee-*/
