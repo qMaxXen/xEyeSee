@@ -61,11 +61,11 @@ A lightweight Python script that displays an eye measuring projector when you ey
 - You can use a custom overlay by replacing the included `overlay.png` with your own overlay (must be named `overlay.png`).
 - You can use `xEyeSee-settings.py` to change settings, such as eye zoom resolution, framerate, debug mode and source width.
 - Zoom in further on the projector by setting the source width to `30`:
-  - Run `xEyeSee-settings.py` inside the main `xEyeSee` folder.
+  - Run `xEyeSee-settings.py` inside the main `xEyeSee` folder
   - Change `Source Width` to 30
-  - Go to: https://qmaxxen.github.io/overlay-gen/more-options/.
-  - Generate a custom overlay with 'Overlay width' set to 30.
-  - Download the `overlay.png` file and place it in the main xEyeSee folder. Make sure it is named `overlay.png`.
+  - Go to: https://qmaxxen.github.io/overlay-gen/more-options/
+  - Generate a custom overlay with 'Overlay width' set to 30
+  - Download the `overlay.png` file and place it in the main xEyeSee folder. Make sure it is named `overlay.png`
   - Restart xEyeSee to apply the new overlay
 - The auto-updater notifies you when new versions are available and can download them automatically.
 
