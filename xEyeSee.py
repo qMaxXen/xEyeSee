@@ -262,7 +262,7 @@ def load_or_init_config():
         print("     Make sure the overlay file is named overlay.png")
         print("  4. Restart this script to use the new overlay")
         print("="*70)
-        input("\nPress Enter to close...")
+        input("Press Enter to close...")
         sys.exit(0)
     return w, h, x, y, int(fps), int(source_width)    
         
@@ -270,7 +270,7 @@ def load_or_init_config():
 TARGET_W, TARGET_H, TARGET_X, TARGET_Y, TARGET_FPS, TARGET_SOURCE_WIDTH = load_or_init_config()
 
 if os.environ.get("XDG_SESSION_TYPE") == "wayland":
-    print("ERROR: Wayland session detected. xEyeSee only works on X11.\n")
+    print("ERROR: Wayland session detected. xEyeSee only works on X11.")
     input("Press Enter to close...")
     sys.exit(1)
 

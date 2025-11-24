@@ -218,7 +218,7 @@ class SettingsGUI:
         
         step3b_label = tk.Label(
             info_frame,
-            text="    Make sure the overlay file is named overlay.png!",
+            text="    Make sure the overlay file is named overlay.png",
             font=("Arial", 9, "bold"),
             anchor=tk.W,
             justify=tk.LEFT
