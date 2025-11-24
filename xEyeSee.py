@@ -15,9 +15,9 @@ DEBUG_MODE = False # Set to True to enable debug prints
 GEOMETRY_POLL_MS = 200   # how often to check Minecraft geometry (ms). Default is 0.2s (200 ms). Higher = lower cpu usage.
 
 # Program Version
-APP_VERSION = "v1.1.0"
+APP_VERSION = "v1.1.1"
 
-DEFAULT_ZOOM = (320, 16384, 800, -7652)
+DEFAULT_ZOOM = (384, 16384, 768, -7652)
 DEFAULT_SOURCE_WIDTH = 60
 
 CONFIG_DIR = os.path.expanduser("~/.config/xEyeSee")
@@ -176,20 +176,26 @@ def load_or_init_config():
         if DEBUG_MODE:
             print(f"Found existing eye zoom resolution in config: {w}x{h}+{x},{y}")
         
+
+
     else:
         print("Please enter your resolution in the format WxH+X,Y")
-        print("For example: 320x16384+800,-7652")
+        print("For example: 384x16384+768,-7652")
         print("  W = width (pixels)\n  H = height (pixels)\n  X = X offset (pixels)\n  Y = Y offset (pixels)\n")
-        resp = input(f"Enter resolution (press Enter for default {DEFAULT_ZOOM[0]}x{DEFAULT_ZOOM[1]}+{DEFAULT_ZOOM[2]},{DEFAULT_ZOOM[3]}): ").strip()
-        if not resp:
-            w, h, x, y = DEFAULT_ZOOM
-        else:
-            m = re.match(r"(\d+)x(\d+)\+(-?\d+),(-?\d+)", resp)
-            if m:
-                w, h, x, y = map(int, m.groups())
-            else:
-                print("Invalid format, using default.")
+        
+        while True:
+            resp = input(f"Enter resolution (press Enter for default {DEFAULT_ZOOM[0]}x{DEFAULT_ZOOM[1]}+{DEFAULT_ZOOM[2]},{DEFAULT_ZOOM[3]}): ").strip()
+            if not resp:
                 w, h, x, y = DEFAULT_ZOOM
+                break
+            else:
+                m = re.match(r"(\d+)x(\d+)\+(-?\d+),(-?\d+)", resp)
+                if m:
+                    w, h, x, y = map(int, m.groups())
+                    break
+                else:
+                    print("Invalid format. Please try again.")
+                    print("Format should be: WxH+X,Y (e.g., 384x16384+768,-7652)\n")
 
     if isinstance(fps_in_file, int) and fps_in_file > 0:
         fps = fps_in_file
@@ -232,14 +238,14 @@ def load_or_init_config():
         if source_width == 30:
             print("\n" + "="*70)
             print("NOTE: For a more zoomed-in projector with source width 30:")
-            print("  1. Visit: https://qmaxxen.github.io/overlay-gen/more-options/")
+            print("  1. Go to: https://qmaxxen.github.io/overlay-gen/more-options/")
             print("  2. Generate a custom overlay with 'Overlay width' set to 30")
             script_dir = os.path.dirname(os.path.abspath(__file__))
             print(f"  3. Download the overlay.png and place it in: {script_dir}")
-            print(f"     Make sure the overlay file is named 'overlay.png'!")
-            print("  4. Restart this script")
+            print("  4. Make sure the overlay file is named overlay.png")
+            print("  5. Restart this script to update the overlay")
             print("="*70)
-            input("Press Enter to save your preferences...")
+            input("Press Enter to save your preferences...\n")
 
     with open(CONFIG_PATH, "w") as f:
         

@@ -4,7 +4,7 @@ import json
 import os
 import webbrowser
 
-DEFAULT_ZOOM = (320, 16384, 800, -7652)
+DEFAULT_ZOOM = (384, 16384, 768, -7652)
 DEFAULT_SOURCE_WIDTH = 60
 DEFAULT_FPS = 60
 CONFIG_DIR = os.path.expanduser("~/.config/xEyeSee")
@@ -157,7 +157,7 @@ class SettingsGUI:
 
         step1_label = tk.Label(
             step1_frame,
-            text="1. Visit:",
+            text="1. Go to:",
             font=("Arial", 9),
             anchor=tk.W,
             justify=tk.LEFT
@@ -174,7 +174,7 @@ class SettingsGUI:
             justify=tk.LEFT,
             bd=0
         )
-        link_label.pack(side=tk.LEFT, padx=(6,0))  
+        link_label.pack(side=tk.LEFT, padx=(2,0))  
 
         link_label.bind("<Button-1>", lambda e: webbrowser.open(url))
         link_label.bind("<Enter>", lambda e: link_label.config(fg="#0000EE"))
@@ -214,9 +214,7 @@ class SettingsGUI:
         )
         path_entry.insert(0, script_dir)
         path_entry.config(state="readonly", justify="left")
-        path_entry.pack(side=tk.LEFT, padx=(6,0), fill=tk.X, expand=True)
-
-
+        path_entry.pack(side=tk.LEFT, padx=(2,0), fill=tk.X, expand=True)
         
         step3b_label = tk.Label(
             info_frame,
@@ -229,7 +227,7 @@ class SettingsGUI:
         
         step4_label = tk.Label(
             info_frame,
-            text="4. Restart xEyeSee",
+            text="4. Restart xEyeSee to update the overlay",
             font=("Arial", 9),
             anchor=tk.W,
             justify=tk.LEFT
