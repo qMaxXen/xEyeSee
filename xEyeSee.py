@@ -160,7 +160,7 @@ def load_or_init_config():
         
         if DEBUG_MODE:
             print(f"\n=== Configuration Loaded from {CONFIG_PATH} ===")
-            print(f"Eyezoom resolution: {w}x{h}+{x},{y}")
+            print(f"Eye zoom resolution: {w}x{h}+{x},{y}")
             print(f"Framerate: {fps} FPS")
             print(f"Source width: {src_w}")
             print(f"Debug mode: {'Enabled' if debug else 'Disabled'}")
@@ -234,21 +234,8 @@ def load_or_init_config():
                 break
             else:
                 print("Invalid input. Please enter either 30 or 60.")
-        
-        if source_width == 30:
-            print("\n" + "="*70)
-            print("NOTE: For a more zoomed-in projector with source width 30:")
-            print("  1. Go to: https://qmaxxen.github.io/overlay-gen/more-options/")
-            print("  2. Generate a custom overlay with 'Overlay width' set to 30")
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            print(f"  3. Download the overlay.png and place it in: {script_dir}")
-            print("  4. Make sure the overlay file is named overlay.png")
-            print("  5. Restart this script to update the overlay")
-            print("="*70)
-            input("Press Enter to save your preferences...\n")
 
     with open(CONFIG_PATH, "w") as f:
-        
         json.dump({
             "eyezoom_resolution": {
                 "zoom_w": w, "zoom_h": h,
@@ -259,16 +246,30 @@ def load_or_init_config():
             "debug_mode": False
         }, f, indent=2)
 
-        print(f"Eye zoom resolution saved to {CONFIG_PATH}: {w}x{h}+{x},{y}")
-        print(f"Framerate saved: {fps} FPS")
-        print(f"Source width saved: {source_width}")
-        print(f"\nYou can change these values by running xEyeSee-settings.py\n")
-        return w, h, x, y, int(fps), int(source_width)
+    print(f"\nEye zoom resolution saved to {CONFIG_PATH}: {w}x{h}+{x},{y}")
+    print(f"Framerate saved: {fps} FPS")
+    print(f"Source width saved: {source_width}")
+    print(f"You can change these values by running xEyeSee-settings.py\n")
+    return w, h, x, y, int(fps), int(source_width)    
+
+    if source_width == 30:
+        print("="*70)
+        print("IMPORTANT: For a more zoomed-in projector with source width 30,\nyou must generate a custom overlay with an overlay width of 30,\notherwise your measurements won't be accurate:")
+        print("  1. Go to: https://qmaxxen.github.io/overlay-gen/more-options/")
+        print("  2. Generate a custom overlay with 'Overlay width' set to 30")
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        print(f"  3. Download the overlay.png and place it in: {script_dir}")
+        print("     Make sure the overlay file is named overlay.png")
+        print("  4. Restart this script to use the new overlay")
+        print("="*70)
+        input("\nPress Enter to close...")
+        sys.exit(0)
+        
 
 TARGET_W, TARGET_H, TARGET_X, TARGET_Y, TARGET_FPS, TARGET_SOURCE_WIDTH = load_or_init_config()
 
 if os.environ.get("XDG_SESSION_TYPE") == "wayland":
-    print("Warning: Wayland session detected. xEyeSee only works on X11.\n")
+    print("ERROR: Wayland session detected. xEyeSee only works on X11.\n")
     input("Press Enter to close...")
     sys.exit(1)
 
@@ -448,7 +449,7 @@ class MinecraftViewer(QtWidgets.QWidget):
         if (w, h, x, y) == (TARGET_W, TARGET_H, TARGET_X, TARGET_Y):
             if not self.active:
                 self.active = True
-                self.debug(f"Eyezoom resolution matched ({w}x{h}+{x},{y}). Displaying eye measuring projector.")
+                self.debug(f"Eye zoom resolution matched ({w}x{h}+{x},{y}). Displaying eye measuring projector.")
             self._recalc_and_position()
             self.show()
             QtCore.QTimer.singleShot(50, self._recalc_and_position)

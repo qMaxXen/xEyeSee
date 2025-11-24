@@ -143,7 +143,7 @@ class SettingsGUI:
         
         note_label = tk.Label(
             info_frame,
-            text="If you are using source width 30, generate a custom overlay with 'Overlay width' of 30,\notherwise your measurements won't be accurate:",
+            text="IMPORTANT: If you are using source width 30, you must generate a custom overlay with an\noverlay width of 30, otherwise your measurements won't be accurate:",
             font=("Arial", 9, "bold"),
             anchor=tk.W,
             justify=tk.LEFT
@@ -218,7 +218,7 @@ class SettingsGUI:
         
         step3b_label = tk.Label(
             info_frame,
-            text="    Make sure the overlay file is named 'overlay.png'!",
+            text="    Make sure the overlay file is named overlay.png!",
             font=("Arial", 9, "bold"),
             anchor=tk.W,
             justify=tk.LEFT
