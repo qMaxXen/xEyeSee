@@ -69,7 +69,7 @@ A lightweight Python script that displays an eye measuring projector when you ey
   - Restart xEyeSee to apply the new overlay
 - The auto-updater notifies you when new versions are available and can download them automatically.
 
-<img width="400" height="500" alt="image" src="https://github.com/user-attachments/assets/2bf5a2fb-431d-4c92-bf06-c67ed9310757" />
+<img width="400" height="500" alt="image" src="https://github.com/user-attachments/assets/f88cd056-9dd6-4320-ac3c-ceb746c83903" />
 
 ## License
 xEyeSee is licensed under the MIT license. You can view the full license [here](https://raw.githubusercontent.com/qMaxXen/xEyeSee/refs/heads/main/LICENSE).
