@@ -17,14 +17,14 @@ A lightweight Python script that displays an eye measuring projector when you ey
 
 ## Installation
 
-1. Go to the [Releases](https://github.com/qMaxXen/xEyeSee/releases/tag/v1.1.0) section and download `xEyeSee-v1.1.0.tar.xz`.
+1. Go to the [Releases](https://github.com/qMaxXen/xEyeSee/releases/tag/v1.1.1) section and download `xEyeSee-v1.1.1.tar.xz`.
 2. Move the downloaded file to a convenient folder, then extract it:
    ```bash
-   tar -xf xEyeSee-v1.1.0.tar.xz
+   tar -xf xEyeSee-v1.1.1.tar.xz
    ```
 3. Install the required Python packages:
    ```bash
-   cd xEyeSee-v1.1.0
+   cd xEyeSee-v1.1.1
    pip3 install -r requirements.txt
    ```
 > [!TIP]
