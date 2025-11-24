@@ -250,7 +250,7 @@ def load_or_init_config():
     print(f"Framerate saved: {fps} FPS")
     print(f"Source width saved: {source_width}")
     print(f"You can change these values by running xEyeSee-settings.py\n")
-    return w, h, x, y, int(fps), int(source_width)    
+    
 
     if source_width == 30:
         print("="*70)
@@ -264,6 +264,7 @@ def load_or_init_config():
         print("="*70)
         input("\nPress Enter to close...")
         sys.exit(0)
+    return w, h, x, y, int(fps), int(source_width)    
         
 
 TARGET_W, TARGET_H, TARGET_X, TARGET_Y, TARGET_FPS, TARGET_SOURCE_WIDTH = load_or_init_config()
