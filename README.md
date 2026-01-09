@@ -17,12 +17,17 @@ A lightweight Python script that displays an eye measuring projector when you ey
 
 ## Installation
 
-1. Go to the [Releases](https://github.com/qMaxXen/xEyeSee/releases/tag/v1.1.1) section and download `xEyeSee-v1.1.1.tar.xz`.
+1. Go to the [Releases](https://github.com/qMaxXen/xEyeSee/releases/latest) section and download `xEyeSee-v1.1.1.tar.xz`.
 2. Move the downloaded file to a convenient folder, then extract it:
+
    ```bash
    tar -xf xEyeSee-v1.1.1.tar.xz
    ```
-3. Install the required Python packages:
+3. Install the required dependencies:
+   - Debian/Ubuntu: `sudo apt install wmctrl x11-utils python3-tk`
+   - Arch Linux: `sudo pacman -S wmctrl xorg-xwininfo tk`
+   - Fedora: `sudo dnf install xwininfo wmctrl python3-tkinter`
+4. Install the required Python packages:
    ```bash
    cd xEyeSee-v1.1.1
    pip3 install -r requirements.txt
@@ -39,11 +44,6 @@ A lightweight Python script that displays an eye measuring projector when you ey
 > ```bash
 > /full/path/to/venv/bin/python <script>.py
 > ```
-
-4. Install the required utilities:
-  - Debian/Ubuntu: `sudo apt install wmctrl x11-utils`
-  - Arch Linux: `sudo pacman -S wmctrl xorg-xwininfo`
-  - Fedora: `sudo dnf install xwininfo wmctrl`
 5. Run the script:
    ```bash
    python3 xEyeSee.py
@@ -65,11 +65,9 @@ A lightweight Python script that displays an eye measuring projector when you ey
   - Change `Source Width` to 30
   - Go to: https://qmaxxen.github.io/overlay-gen/more-options/
   - Generate a custom overlay with 'Overlay width' set to 30
-  - Download the `overlay.png` file and place it in the main xEyeSee folder. Make sure it is named `overlay.png`
+  - Download the `overlay.png` file and place it in the main xEyeSee folder. (Make sure it is named `overlay.png`)
   - Restart xEyeSee to apply the new overlay
 - The auto-updater notifies you when new versions are available and can download them automatically.
-
-<img width="400" height="500" alt="image" src="https://github.com/user-attachments/assets/f88cd056-9dd6-4320-ac3c-ceb746c83903" />
 
 ## License
 xEyeSee is licensed under the MIT license. You can view the full license [here](https://raw.githubusercontent.com/qMaxXen/xEyeSee/refs/heads/main/LICENSE).
