@@ -19,6 +19,7 @@ A lightweight Python script that displays an eye measuring projector when you ey
 
 1. Go to the [releases](https://github.com/qMaxXen/xEyeSee/releases/latest) section and download `xEyeSee-v1.1.1.tar.xz`.
 2. Move the downloaded file to a convenient folder, then extract it:
+
    ```bash
    tar -xf xEyeSee-v1.1.1.tar.xz
    ```
@@ -27,6 +28,7 @@ A lightweight Python script that displays an eye measuring projector when you ey
    - Arch Linux: `sudo pacman -S wmctrl xorg-xwininfo tk`
    - Fedora: `sudo dnf install xwininfo wmctrl python3-tkinter`
 4. Install the required Python packages:
+
    ```bash
    cd xEyeSee-v1.1.1
    pip3 install -r requirements.txt
@@ -44,6 +46,7 @@ A lightweight Python script that displays an eye measuring projector when you ey
 > /full/path/to/venv/bin/python <script>.py
 > ```
 5. Run the script:
+
    ```bash
    python3 xEyeSee.py
    ```
