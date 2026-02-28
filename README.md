@@ -76,4 +76,4 @@ xEyeSee is licensed under the MIT license. You can view the full license [here](
 
 ---
 
-If you have any issues, feel free to ask for help in the `#public-help` channel in the [Linux MCSR Discord server](https://discord.gg/3tm4UpUQ8t).
+If you have any issues, feel free to ask for help by creating a thread in the [Linux MCSR Discord server](https://discord.gg/3tm4UpUQ8t).
