@@ -13,10 +13,10 @@ from mss import mss
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 DEBUG_MODE = False # Set to True to enable debug prints
-GEOMETRY_POLL_MS = 200   # how often to check Minecraft geometry (ms). Default is 0.2s (200 ms). Higher = lower cpu usage.
+GEOMETRY_POLL_MS = 200 # how often to check Minecraft geometry (ms). Default is 0.2s (200 ms). Higher = lower cpu usage.
 
 # Program Version
-APP_VERSION = "v1.1.1"
+APP_VERSION = "v1.2.0"
 
 DEFAULT_ZOOM = (384, 16384, 768, -7652)
 DEFAULT_SOURCE_WIDTH = 60
@@ -75,7 +75,10 @@ def check_and_update(current_version):
         if os.path.exists(folder_path):
             print(f"[Updater] Latest version ({latest}) already extracted at:")
             print(f"    {folder_path}")
-            print("[Updater] Please navigate to that folder and run:")
+            print("\n[Updater] IMPORTANT: If you have a custom overlay, make sure to copy")
+            print("          the overlay.png file from this directory to the new")
+            print("          directory so your overlay stays the same.")
+            print("\n[Updater] To finish setup, navigate to the new folder and run:")
             print("    ./install.sh")
             sys.exit(0)
 
@@ -117,7 +120,10 @@ def check_and_update(current_version):
 
         print(f"\n[Updater] Update completed. New version extracted to:")
         print(f"    {folder_path}")
-        print("[Updater] To finish setup, navigate to the new folder and run:")
+        print("\n[Updater] IMPORTANT: If you have a custom overlay, make sure to copy")
+        print("          the overlay.png file from this directory to the new")
+        print("          directory so your overlay stays the same.")
+        print("\n[Updater] To finish setup, navigate to the new folder and run:")
         print("    chmod +x install.sh  # Make script executable")
         print("    ./install.sh         # Run installer")
         sys.exit(0)
@@ -168,12 +174,12 @@ def load_or_init_config():
         DEBUG_MODE = debug
         
         if DEBUG_MODE:
-            log(f"\n=== Configuration Loaded from {CONFIG_PATH} ===")
+            log(f"Configuration Loaded from {CONFIG_PATH}")
             log(f"Eye zoom resolution: {w}x{h}+{x},{y}")
             log(f"Framerate: {fps} FPS")
             log(f"Source width: {src_w}")
             log(f"Debug mode: {'Enabled' if debug else 'Disabled'}")
-            log(f"You can change these values using xEyeSee-settings.py\n")
+            log(f"You can change these values by running: xeyesee --settings\n")
         
         return (w, h, x, y, fps, src_w)
 
@@ -258,8 +264,7 @@ def load_or_init_config():
     print(f"\nEye zoom resolution saved to {CONFIG_PATH}: {w}x{h}+{x},{y}")
     print(f"Framerate saved: {fps} FPS")
     print(f"Source width saved: {source_width}")
-    print(f"You can change these values by running xEyeSee-settings.py\n")
-    
+    print(f"You can change these values by running: xeyesee --settings\n")
 
     if source_width == 30:
         print("="*70)
@@ -284,7 +289,7 @@ if os.environ.get("XDG_SESSION_TYPE") == "wayland":
     sys.exit(1)
 
 print(f"xEyeSee version: {APP_VERSION}")
-print("To change settings, run xEyeSee-settings.py")
+print("To change settings, run xeyesee --settings")
 
 latest = check_for_update(APP_VERSION)
 if latest:

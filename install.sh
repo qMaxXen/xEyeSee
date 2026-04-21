@@ -31,7 +31,7 @@ if ! command -v xwininfo &>/dev/null; then MISSING_UTILS+=("x11-utils or xorg-xw
 
 if [ ${#MISSING_UTILS[@]} -ne 0 ]; then
     echo -e "${RED}ERROR: Missing system utilities: ${MISSING_UTILS[*]}${NC}"
-    echo "Please install them to ensure xEyeSee can track window geometry:"
+    echo "Please install them to make sure xEyeSee works properly:"
     echo "  Debian/Ubuntu: sudo apt install wmctrl x11-utils"
     echo "  Arch Linux:    sudo pacman -S wmctrl xorg-xwininfo"
     echo "  Fedora:        sudo dnf install xwininfo wmctrl"
