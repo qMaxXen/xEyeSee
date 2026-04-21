@@ -377,6 +377,8 @@ class MinecraftViewer(QtWidgets.QWidget):
         ww, wh = self.window_geom["width"], self.window_geom["height"]
         tx = wx + (ww - SRC_W) // 2
         ty = wy + (wh - SRC_H) // 2
+        tx = max(0, min(tx, self.screen_w - SRC_W))
+        ty = max(0, min(ty, self.screen_h - SRC_H))
         self.capture_region = {"top": ty, "left": tx, "width": SRC_W, "height": SRC_H}
 
         preview_w = max(1, min(wx, self.screen_w))
