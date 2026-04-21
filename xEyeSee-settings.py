@@ -313,8 +313,7 @@ class SettingsGUI:
             
             messagebox.showinfo(
                 "Settings Saved",
-                f"Your settings have been saved successfully!\n"
-                f"\nRestart xEyeSee for changes to take effect."
+                f"Your settings have been saved successfully!"
             )
         except Exception as e:
             messagebox.showerror("Error", f"Failed to save settings: {e}")

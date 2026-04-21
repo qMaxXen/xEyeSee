@@ -6,6 +6,7 @@ import json
 import shutil
 import tempfile
 import tarfile
+import datetime
 import numpy as np
 import requests
 from mss import mss
@@ -22,6 +23,13 @@ DEFAULT_SOURCE_WIDTH = 60
 
 CONFIG_DIR = os.path.expanduser("~/.config/xEyeSee")
 CONFIG_PATH = os.path.join(CONFIG_DIR, "info.json")
+
+def log(*args, force=False):
+    if DEBUG_MODE or force:
+        timestamp = datetime.datetime.now().strftime("[%H:%M:%S]")
+        msg = " ".join(map(str, args))
+        sys.stdout.write(f"{timestamp} {msg}\n")
+        sys.stdout.flush()
 
 def get_latest_github_release_version():
     url = "https://api.github.com/repos/qMaxXen/xEyeSee/releases/latest"
@@ -67,8 +75,8 @@ def check_and_update(current_version):
         if os.path.exists(folder_path):
             print(f"[Updater] Latest version ({latest}) already extracted at:")
             print(f"    {folder_path}")
-            print("[Updater] Run the program from that folder to use the new version.")
-            input("Press Enter to close...")
+            print("[Updater] Please navigate to that folder and run:")
+            print("    ./install.sh")
             sys.exit(0)
 
         download_url = next(
@@ -109,8 +117,9 @@ def check_and_update(current_version):
 
         print(f"\n[Updater] Update completed. New version extracted to:")
         print(f"    {folder_path}")
-        print("[Updater] Please run the program from the new folder.")
-        input("Press Enter to close...")
+        print("[Updater] To finish setup, navigate to the new folder and run:")
+        print("    chmod +x install.sh  # Make script executable")
+        print("    ./install.sh         # Run installer")
         sys.exit(0)
 
     except requests.exceptions.HTTPError as he:
@@ -159,12 +168,12 @@ def load_or_init_config():
         DEBUG_MODE = debug
         
         if DEBUG_MODE:
-            print(f"\n=== Configuration Loaded from {CONFIG_PATH} ===")
-            print(f"Eye zoom resolution: {w}x{h}+{x},{y}")
-            print(f"Framerate: {fps} FPS")
-            print(f"Source width: {src_w}")
-            print(f"Debug mode: {'Enabled' if debug else 'Disabled'}")
-            print(f"You can change these values using xEyeSee-settings.py\n")
+            log(f"\n=== Configuration Loaded from {CONFIG_PATH} ===")
+            log(f"Eye zoom resolution: {w}x{h}+{x},{y}")
+            log(f"Framerate: {fps} FPS")
+            log(f"Source width: {src_w}")
+            log(f"Debug mode: {'Enabled' if debug else 'Disabled'}")
+            log(f"You can change these values using xEyeSee-settings.py\n")
         
         return (w, h, x, y, fps, src_w)
 
@@ -327,11 +336,10 @@ else:
     if DEBUG_MODE:
         print(f"Overlay found at: {OVERLAY_PATH}\n")
 
-
 class MinecraftViewer(QtWidgets.QWidget):
     def __init__(self, x, y, w, h, fps=20):
         super().__init__()
-        self.setWindowTitle("Minecraft Live Preview")
+        self.setWindowTitle("xEyeSee")
         self.setWindowFlags(
             QtCore.Qt.WindowStaysOnTopHint |
             QtCore.Qt.FramelessWindowHint |
@@ -366,10 +374,6 @@ class MinecraftViewer(QtWidgets.QWidget):
         self.timer.start(int(1000 / fps))
         self.window_poll_timer = QtCore.QTimer(self, timeout=self.check_minecraft_geometry)
         self.window_poll_timer.start(GEOMETRY_POLL_MS)
-
-    def debug(self, *args):
-        if DEBUG_MODE:
-            print(*args)
 
     def _recalc_and_position(self):
         SRC_W, SRC_H = TARGET_SOURCE_WIDTH, 580
@@ -417,10 +421,10 @@ class MinecraftViewer(QtWidgets.QWidget):
             )
             self.overlay_label.setPixmap(overlay_pix)
 
-        self.debug(
+        log(
             f"Monitor: {target_mon['width']}x{target_mon['height']}@({target_mon['left']},{target_mon['top']})"
         )
-        self.debug(
+        log(
             f"Capture {SRC_W}×{SRC_H} @({tx},{ty}), preview {preview_w}×{preview_h} @({desired_x},{desired_y})"
         )
 
@@ -431,7 +435,7 @@ class MinecraftViewer(QtWidgets.QWidget):
                 if '*' in line and "Minecraft" in line:
                     title = line.split(maxsplit=3)[-1]
                     if DEBUG_MODE:
-                        self.debug(f"Found Minecraft instance: {title}")
+                        log(f"Found Minecraft instance: {title}")
                     return title
         except subprocess.CalledProcessError:
             pass
@@ -453,9 +457,11 @@ class MinecraftViewer(QtWidgets.QWidget):
     def check_minecraft_geometry(self):
         title = self.get_minecraft_window_title()
         if not title:
+            log("Waiting for Minecraft window...")
             return
         geo = self.get_geometry_from_xwininfo(title)
         if not geo:
+            log(f"Failed to get geometry for: {title}")
             return
 
         x, y, w, h = geo
@@ -466,13 +472,14 @@ class MinecraftViewer(QtWidgets.QWidget):
             self.window_geom["height"]
         )
         if old != (x, y, w, h):
+            log(f"Window moved/resized: {w}x{h}+{x},{y}")
             self.window_geom = {"top": y, "left": x, "width": w, "height": h}
 
 
         if (w, h, x, y) == (TARGET_W, TARGET_H, TARGET_X, TARGET_Y):
             if not self.active:
                 self.active = True
-                self.debug(f"Eye zoom resolution matched ({w}x{h}+{x},{y}). Displaying eye measuring projector.")
+                log(f"Eye zoom resolution matched ({w}x{h}+{x},{y}). Displaying eye measuring projector.")
             self._recalc_and_position()
             self.show()
             QtCore.QTimer.singleShot(50, self._recalc_and_position)
@@ -480,7 +487,7 @@ class MinecraftViewer(QtWidgets.QWidget):
         else:
             if self.active:
                 self.active = False
-                self.debug(f"Resolution changed to {w}x{h}+{x},{y}. Expected {TARGET_W}x{TARGET_H}+{TARGET_X},{TARGET_Y}. Hiding projector.")
+                log(f"Resolution is {w}x{h}+{x},{y} but expected {TARGET_W}x{TARGET_H}+{TARGET_X},{TARGET_Y}. Hiding projector.")
                 self.hide()
 
     def update_frame(self):
@@ -504,8 +511,7 @@ class MinecraftViewer(QtWidgets.QWidget):
             )
             self.label.setPixmap(scaled)
         except Exception as e:
-            if DEBUG_MODE:
-                print("Frame grab error:", e)
+            log("Frame grab error:", e)
 
     def closeEvent(self, event):
         self.timer.stop()
