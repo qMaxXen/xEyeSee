@@ -377,19 +377,36 @@ class MinecraftViewer(QtWidgets.QWidget):
         ww, wh = self.window_geom["width"], self.window_geom["height"]
         tx = wx + (ww - SRC_W) // 2
         ty = wy + (wh - SRC_H) // 2
-        tx = max(0, min(tx, self.screen_w - SRC_W))
-        ty = max(0, min(ty, self.screen_h - SRC_H))
+
+        monitors = self.sct.monitors[1:]
+        target_mon = monitors[0]
+        window_center_x = wx + ww // 2
+        window_center_y = wy + wh // 2
+
+        for m in monitors:
+            if (m["left"] <= window_center_x < m["left"] + m["width"] and
+                m["top"] <= window_center_y < m["top"] + m["height"]):
+                target_mon = m
+                break
+
+        tx = max(target_mon["left"], min(tx, target_mon["left"] + target_mon["width"] - SRC_W))
+        ty = max(target_mon["top"], min(ty, target_mon["top"] + target_mon["height"] - SRC_H))
+
         self.capture_region = {"top": ty, "left": tx, "width": SRC_W, "height": SRC_H}
 
-        preview_w = max(1, min(wx, self.screen_w))
-        preview_h = min(PREVIEW_H, self.screen_h)
+        space_on_left = wx - target_mon["left"]
+        preview_w = max(1, min(space_on_left, target_mon["width"]))
+        preview_h = min(PREVIEW_H, target_mon["height"])
 
         self.setFixedSize(preview_w, preview_h)
         self.label.setGeometry(0, 0, preview_w, preview_h)
         self.overlay_label.setGeometry(0, 0, preview_w, preview_h)
 
-        desired_x, desired_y = 0, wy + (wh - preview_h) // 2
-        desired_y = max(0, min(desired_y, self.screen_h - preview_h))
+        desired_x = target_mon["left"]
+        desired_y = wy + (wh - preview_h) // 2
+
+        desired_y = max(target_mon["top"], min(desired_y, target_mon["top"] + target_mon["height"] - preview_h))
+
         self.move(desired_x, desired_y)
 
         if self.overlay_src:
@@ -401,8 +418,11 @@ class MinecraftViewer(QtWidgets.QWidget):
             self.overlay_label.setPixmap(overlay_pix)
 
         self.debug(
-                    f"Capture {SRC_W}×{SRC_H} @({tx},{ty}), preview {preview_w}×{preview_h} @({desired_x},{desired_y})"
-                )
+            f"Monitor: {target_mon['width']}x{target_mon['height']}@({target_mon['left']},{target_mon['top']})"
+        )
+        self.debug(
+            f"Capture {SRC_W}×{SRC_H} @({tx},{ty}), preview {preview_w}×{preview_h} @({desired_x},{desired_y})"
+        )
 
     def get_minecraft_window_title(self):
         try:
