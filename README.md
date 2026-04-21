@@ -26,7 +26,7 @@ A lightweight Python script that displays an eye measuring projector when you ey
 3. Install the required Python packages to run xEyeSee:
 
    ```bash
-   cd xEyeSee-v1.2.0.tar.xz
+   cd xEyeSee-v1.2.0
    chmod +x install.sh
    ./install.sh
    ```
