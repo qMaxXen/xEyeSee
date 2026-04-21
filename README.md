@@ -17,38 +17,26 @@ A lightweight Python script that displays an eye measuring projector when you ey
 
 ## Installation
 
-1. Go to the [releases](https://github.com/qMaxXen/xEyeSee/releases/latest) section and download `xEyeSee-v1.1.1.tar.xz`.
-2. Move the downloaded file to a convenient folder, then extract it:
+1. Go to the [releases](https://github.com/qMaxXen/xEyeSee/releases/latest) section and download `xEyeSee-v1.2.0.tar.xz`.
+2. Move the downloaded file to a convenient folder, then extract it using the terminal with the following command:
 
    ```bash
-   tar -xf xEyeSee-v1.1.1.tar.xz
+   tar -xf xEyeSee-v1.2.0.tar.xz
    ```
-3. Install the required dependencies:
-   - Debian/Ubuntu: `sudo apt install wmctrl x11-utils python3-tk`
-   - Arch Linux: `sudo pacman -S wmctrl xorg-xwininfo tk`
-   - Fedora: `sudo dnf install xwininfo wmctrl python3-tkinter`
-4. Install the required Python packages:
+3. Install the required Python packages to run xEyeSee:
 
    ```bash
-   cd xEyeSee-v1.1.1
-   pip3 install -r requirements.txt
+   cd xEyeSee-v1.2.0.tar.xz
+   chmod +x install.sh
+   ./install.sh
    ```
-> [!TIP]
-> Getting the `PEP 668 (externally-managed-environment)` error after running `pip3 install -r requirements.txt`? Create a Python virtual environment:
-> ```bash
-> # Make sure you are in the extracted folder
-> python3 -m venv venv
-> source venv/bin/activate
-> pip install -r requirements.txt
-> ```
-> To run the script from the terminal without needing to enter the venv, use the Python binary inside the venv:
-> ```bash
-> /full/path/to/venv/bin/python <script>.py
-> ```
-5. Run the script:
-
+4. To run xEyeSee, type:
    ```bash
-   python3 xEyeSee.py
+   xeyesee
+   ```
+   To configure xEyeSee, type:
+   ```bash
+   xeyesee --settings
    ```
 
 ## Features
@@ -61,9 +49,9 @@ A lightweight Python script that displays an eye measuring projector when you ey
 - The eye measuring projector displays automatically when eye zoom is enabled.
 - You can customize the framerate of the eye measuring projector.
 - You can use a custom overlay by replacing the included `overlay.png` with your own overlay (must be named `overlay.png`).
-- You can use `xEyeSee-settings.py` to change settings, such as eye zoom resolution, framerate, debug mode and source width.
+- Run `xeyesee --settings` to change settings, such as eye zoom resolution, framerate, debug mode and source width.
 - Zoom in further on the projector by setting the source width to `30`:
-  - Run `xEyeSee-settings.py` inside the main `xEyeSee` folder
+  - Run `xeyesee --settings`
   - Change `Source Width` to 30
   - Go to: https://qmaxxen.github.io/overlay-gen/more-options/
   - Generate a custom overlay with 'Overlay width' set to 30
