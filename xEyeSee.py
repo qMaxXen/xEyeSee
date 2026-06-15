@@ -9,7 +9,7 @@ import tarfile
 import datetime
 import numpy as np
 import requests
-from mss import mss
+import mss
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 DEBUG_MODE = False # Set to True to enable debug prints
@@ -355,7 +355,7 @@ class MinecraftViewer(QtWidgets.QWidget):
 
         self.window_geom = {"top": y, "left": x, "width": w, "height": h}
 
-        screen = mss().monitors[1]
+        screen = mss.MSS().monitors[1]
         self.screen_h, self.screen_w = screen["height"], screen["width"]
 
         self.label = QtWidgets.QLabel(self)
@@ -370,7 +370,7 @@ class MinecraftViewer(QtWidgets.QWidget):
             QtGui.QPixmap(OVERLAY_PATH) if os.path.exists(OVERLAY_PATH) else None
         )
 
-        self.sct = mss()
+        self.sct = mss.MSS()
 
         self.active = False
         self.hide()
@@ -449,15 +449,22 @@ class MinecraftViewer(QtWidgets.QWidget):
     def get_geometry_from_xwininfo(self, window_name):
         try:
             out = subprocess.check_output(
-                ["xwininfo", "-name", window_name], text=True
+                ["xwininfo", "-name", window_name], text=True, stderr=subprocess.STDOUT
             )
-            m = re.search(r"-geometry\s+(\d+)x(\d+)\+([-\d]+)\+([-\d]+)", out)
+            m = re.search(r"-geometry\s+(\d+)x(\d+)([+-]+\d+)([+-]+\d+)", out)
             if m:
-                w, h, x, y = map(int, m.groups())
+                w, h = int(m.group(1)), int(m.group(2))
+                x = int(m.group(3).replace("+-", "-").replace("++", "+").replace("--", "-"))
+                y = int(m.group(4).replace("+-", "-").replace("++", "+").replace("--", "-"))
                 return x, y, w, h
-        except subprocess.CalledProcessError:
-            pass
-        return None
+            else:
+                raw = re.search(r"-geometry\s+(\S+)", out)
+                raw_geom = raw.group(1) if raw else "(not found in output)"
+                log(f"Regex did not match geometry string: '{raw_geom}'", force=True)
+                return None
+        except subprocess.CalledProcessError as e:
+            log(f"xwininfo failed for '{window_name}': {(e.output or '').strip()}", force=True)
+            return None
 
     def check_minecraft_geometry(self):
         title = self.get_minecraft_window_title()
