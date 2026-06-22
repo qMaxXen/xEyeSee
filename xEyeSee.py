@@ -16,7 +16,7 @@ DEBUG_MODE = False # Set to True to enable debug prints
 GEOMETRY_POLL_MS = 200 # how often to check Minecraft geometry (ms). Default is 0.2s (200 ms). Higher = lower cpu usage.
 
 # Program Version
-APP_VERSION = "v1.2.0"
+APP_VERSION = "v1.2.1"
 
 DEFAULT_ZOOM = (384, 16384, 768, -7652)
 DEFAULT_SOURCE_WIDTH = 60
@@ -451,15 +451,15 @@ class MinecraftViewer(QtWidgets.QWidget):
             out = subprocess.check_output(
                 ["xwininfo", "-name", window_name], text=True, stderr=subprocess.STDOUT
             )
-            m = re.search(r"-geometry\s+(\d+)x(\d+)([+-]+\d+)([+-]+\d+)", out)
-            if m:
-                w, h = int(m.group(1)), int(m.group(2))
-                x = int(m.group(3).replace("+-", "-").replace("++", "+").replace("--", "-"))
-                y = int(m.group(4).replace("+-", "-").replace("++", "+").replace("--", "-"))
+            geometry_match = re.search(r"-geometry\s+(\d+)x(\d+)([+-]+\d+)([+-]+\d+)", out)
+            if geometry_match:
+                w, h = int(geometry_match.group(1)), int(geometry_match.group(2))
+                x = int(geometry_match.group(3).replace("+-", "-").replace("++", "+").replace("--", "-"))
+                y = int(geometry_match.group(4).replace("+-", "-").replace("++", "+").replace("--", "-"))
                 return x, y, w, h
             else:
-                raw = re.search(r"-geometry\s+(\S+)", out)
-                raw_geom = raw.group(1) if raw else "(not found in output)"
+                raw_match = re.search(r"-geometry\s+(\S+)", out)
+                raw_geom = raw_match.group(1) if raw_match else "(not found in output)"
                 log(f"Regex did not match geometry string: '{raw_geom}'", force=True)
                 return None
         except subprocess.CalledProcessError as e:
