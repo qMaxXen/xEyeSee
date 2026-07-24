@@ -6,7 +6,7 @@
 > [!IMPORTANT]
 > This script works **only on Linux (X11).**
 
-A lightweight Python script that displays an eye measuring projector when you eye zoom, without needing OBS Studio. 
+A lightweight Python program that displays an eye measuring projector when you eye zoom, without needing OBS Studio. 
 
 <details>
   <summary>Demo Video [Click to expand]</summary>
