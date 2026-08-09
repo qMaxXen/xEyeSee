@@ -18,15 +18,15 @@ class SettingsGUI:
         self.root.resizable(False, False)
         self.load_settings()
         self.create_widgets()
-        
+
     def load_settings(self):
         os.makedirs(CONFIG_DIR, exist_ok=True)
-        
+
         if os.path.isfile(CONFIG_PATH):
             try:
                 with open(CONFIG_PATH, "r") as f:
                     data = json.load(f)
-                    
+
                 geom = data.get("eyezoom_resolution", {})
                 self.zoom_w = geom.get("zoom_w", DEFAULT_ZOOM[0])
                 self.zoom_h = geom.get("zoom_h", DEFAULT_ZOOM[1])
@@ -40,7 +40,7 @@ class SettingsGUI:
                 self.set_defaults()
         else:
             self.set_defaults()
-    
+
     def set_defaults(self):
         self.zoom_w = DEFAULT_ZOOM[0]
         self.zoom_h = DEFAULT_ZOOM[1]
@@ -49,22 +49,22 @@ class SettingsGUI:
         self.framerate = DEFAULT_FPS
         self.source_width = DEFAULT_SOURCE_WIDTH
         self.debug_mode = False
-    
+
     def create_widgets(self):
         title_label = tk.Label(
-            self.root, 
-            text="xEyeSee Settings", 
+            self.root,
+            text="xEyeSee Settings",
             font=("Arial", 18, "bold"),
             pady=15
         )
         title_label.pack()
-        
-        main_frame = ttk.Frame(self.root, padding=(20, 8)) 
+
+        main_frame = ttk.Frame(self.root, padding=(20, 8))
         main_frame.pack(fill=tk.BOTH, expand=True)
-        
+
         debug_frame = ttk.LabelFrame(main_frame, text="Debug Mode", padding="10")
         debug_frame.pack(fill=tk.X, pady=5)
-        
+
         self.debug_var = tk.BooleanVar(value=self.debug_mode)
         debug_check = ttk.Checkbutton(
             debug_frame,
@@ -72,53 +72,53 @@ class SettingsGUI:
             variable=self.debug_var
         )
         debug_check.pack(anchor=tk.W)
-        
+
         resolution_frame = ttk.LabelFrame(main_frame, text="Eye Zoom Resolution", padding="10")
         resolution_frame.pack(fill=tk.X, pady=5)
-        
+
         width_row = ttk.Frame(resolution_frame)
         width_row.pack(fill=tk.X, pady=3)
         ttk.Label(width_row, text="Width (pixels):", width=20).pack(side=tk.LEFT)
         self.width_entry = ttk.Entry(width_row, width=15)
         self.width_entry.insert(0, str(self.zoom_w))
         self.width_entry.pack(side=tk.LEFT, padx=5)
-        
+
         height_row = ttk.Frame(resolution_frame)
         height_row.pack(fill=tk.X, pady=3)
         ttk.Label(height_row, text="Height (pixels):", width=20).pack(side=tk.LEFT)
         self.height_entry = ttk.Entry(height_row, width=15)
         self.height_entry.insert(0, str(self.zoom_h))
         self.height_entry.pack(side=tk.LEFT, padx=5)
-        
+
         x_row = ttk.Frame(resolution_frame)
         x_row.pack(fill=tk.X, pady=3)
         ttk.Label(x_row, text="X Offset (pixels):", width=20).pack(side=tk.LEFT)
         self.x_entry = ttk.Entry(x_row, width=15)
         self.x_entry.insert(0, str(self.zoom_x))
         self.x_entry.pack(side=tk.LEFT, padx=5)
-        
+
         y_row = ttk.Frame(resolution_frame)
         y_row.pack(fill=tk.X, pady=3)
         ttk.Label(y_row, text="Y Offset (pixels):", width=20).pack(side=tk.LEFT)
         self.y_entry = ttk.Entry(y_row, width=15)
         self.y_entry.insert(0, str(self.zoom_y))
         self.y_entry.pack(side=tk.LEFT, padx=5)
-        
+
         framerate_frame = ttk.LabelFrame(main_frame, text="Projector Framerate", padding="10")
         framerate_frame.pack(fill=tk.X, pady=5)
-        
+
         fps_row = ttk.Frame(framerate_frame)
         fps_row.pack(fill=tk.X, pady=3)
         ttk.Label(fps_row, text="Framerate (FPS):", width=20).pack(side=tk.LEFT)
         self.fps_entry = ttk.Entry(fps_row, width=15)
         self.fps_entry.insert(0, str(self.framerate))
         self.fps_entry.pack(side=tk.LEFT, padx=5)
-        
+
         source_frame = ttk.LabelFrame(main_frame, text="Source Width", padding="10")
         source_frame.pack(fill=tk.X, pady=5)
-        
+
         self.source_var = tk.IntVar(value=self.source_width)
-        
+
         source_60 = ttk.Radiobutton(
             source_frame,
             text="60 (Standard zoom level)",
@@ -126,7 +126,7 @@ class SettingsGUI:
             value=60
         )
         source_60.pack(anchor=tk.W, pady=2)
-        
+
         source_30 = ttk.Radiobutton(
             source_frame,
             text="30 (More zoomed-in projector)",
@@ -135,12 +135,12 @@ class SettingsGUI:
         )
 
         source_30.pack(anchor=tk.W, pady=2)
-        
+
         info_frame = ttk.Frame(source_frame)
         info_frame.pack(anchor=tk.W, pady=(10, 5), fill=tk.X)
-        
+
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        
+
         note_label = tk.Label(
             info_frame,
             text="IMPORTANT: If you are using source width 30, you must generate a custom overlay with an\noverlay width of 30, otherwise your measurements won't be accurate:",
@@ -149,11 +149,11 @@ class SettingsGUI:
             justify=tk.LEFT
         )
         note_label.pack(anchor=tk.W, pady=(0, 5))
-        
-        step1_frame = tk.Frame(info_frame)
-        step1_frame.pack(anchor=tk.W)  
 
-        url = "https://qmaxxen.github.io/overlay-gen/more-options/"
+        step1_frame = tk.Frame(info_frame)
+        step1_frame.pack(anchor=tk.W)
+
+        url = "https://qmaxxen.github.io/overlay-gen/"
 
         step1_label = tk.Label(
             step1_frame,
@@ -174,13 +174,13 @@ class SettingsGUI:
             justify=tk.LEFT,
             bd=0
         )
-        link_label.pack(side=tk.LEFT, padx=(2,0))  
+        link_label.pack(side=tk.LEFT, padx=(2,0))
 
         link_label.bind("<Button-1>", lambda e: webbrowser.open(url))
         link_label.bind("<Enter>", lambda e: link_label.config(fg="#0000EE"))
         link_label.bind("<Leave>", lambda e: link_label.config(fg="blue"))
 
-        
+
         step2_label = tk.Label(
             info_frame,
             text="2. Generate a custom overlay with 'Overlay width' set to 30",
@@ -189,7 +189,7 @@ class SettingsGUI:
             justify=tk.LEFT
         )
         step2_label.pack(anchor=tk.W, pady=(5, 0))
-        
+
         step3_frame = tk.Frame(info_frame)
         step3_frame.pack(anchor=tk.W, fill=tk.X)
 
@@ -210,12 +210,12 @@ class SettingsGUI:
             relief="flat",
             readonlybackground=self.root.cget('bg'),
             cursor="arrow",
-            width=45           
+            width=45
         )
         path_entry.insert(0, script_dir)
         path_entry.config(state="readonly", justify="left")
         path_entry.pack(side=tk.LEFT, padx=(2,0), fill=tk.X, expand=True)
-        
+
         step3b_label = tk.Label(
             info_frame,
             text="    Make sure the overlay file is named overlay.png",
@@ -224,7 +224,7 @@ class SettingsGUI:
             justify=tk.LEFT
         )
         step3b_label.pack(anchor=tk.W)
-        
+
         step4_label = tk.Label(
             info_frame,
             text="4. Restart xEyeSee to update the overlay",
@@ -234,8 +234,8 @@ class SettingsGUI:
         )
         step4_label.pack(anchor=tk.W, pady=(5, 0))
 
-        button_frame = ttk.Frame(main_frame, padding=(6, 4))  
-        button_frame.pack(fill=tk.X, side=tk.BOTTOM, pady=(6, 4))  
+        button_frame = ttk.Frame(main_frame, padding=(6, 4))
+        button_frame.pack(fill=tk.X, side=tk.BOTTOM, pady=(6, 4))
 
         save_btn = ttk.Button(
             button_frame,
@@ -244,7 +244,7 @@ class SettingsGUI:
             width=15
         )
         save_btn.pack(side=tk.LEFT, padx=(4,2), pady=2)
-        
+
         reset_btn = ttk.Button(
             button_frame,
             text="Reset to Default",
@@ -252,7 +252,7 @@ class SettingsGUI:
             width=15
         )
         reset_btn.pack(side=tk.LEFT, padx=(2,4), pady=2)
-        
+
         exit_btn = ttk.Button(
             button_frame,
             text="Exit",
@@ -260,7 +260,7 @@ class SettingsGUI:
             width=15
         )
         exit_btn.pack(side=tk.RIGHT, padx=4, pady=2)
-    
+
 
     def validate_inputs(self):
         try:
@@ -269,15 +269,15 @@ class SettingsGUI:
             x = int(self.x_entry.get())
             y = int(self.y_entry.get())
             fps = int(self.fps_entry.get())
-            
+
             if width <= 0 or height <= 0:
                 messagebox.showerror("Invalid Input", "Width and Height must be positive numbers.")
                 return None
-            
+
             if fps <= 0:
                 messagebox.showerror("Invalid Input", "Framerate must be a positive number.")
                 return None
-            
+
             return {
                 "width": width,
                 "height": height,
@@ -288,12 +288,12 @@ class SettingsGUI:
         except ValueError:
             messagebox.showerror("Invalid Input", "Please enter valid numbers for all fields.")
             return None
-    
+
     def save_settings(self):
         validated = self.validate_inputs()
         if validated is None:
             return
-        
+
         config_data = {
             "eyezoom_resolution": {
                 "zoom_w": validated["width"],
@@ -305,41 +305,41 @@ class SettingsGUI:
             "source_width": self.source_var.get(),
             "debug_mode": self.debug_var.get()
         }
-        
+
         try:
             os.makedirs(CONFIG_DIR, exist_ok=True)
             with open(CONFIG_PATH, "w") as f:
                 json.dump(config_data, f, indent=2)
-            
+
             messagebox.showinfo(
                 "Settings Saved",
                 f"Your settings have been saved successfully!"
             )
         except Exception as e:
             messagebox.showerror("Error", f"Failed to save settings: {e}")
-    
+
     def reset_to_default(self):
         response = messagebox.askyesno(
             "Reset to Default",
             "Are you sure you want to reset all settings to their default values?"
         )
-        
+
         if response:
             self.width_entry.delete(0, tk.END)
             self.width_entry.insert(0, str(DEFAULT_ZOOM[0]))
-            
+
             self.height_entry.delete(0, tk.END)
             self.height_entry.insert(0, str(DEFAULT_ZOOM[1]))
-            
+
             self.x_entry.delete(0, tk.END)
             self.x_entry.insert(0, str(DEFAULT_ZOOM[2]))
-            
+
             self.y_entry.delete(0, tk.END)
             self.y_entry.insert(0, str(DEFAULT_ZOOM[3]))
-            
+
             self.fps_entry.delete(0, tk.END)
             self.fps_entry.insert(0, str(DEFAULT_FPS))
-            
+
             self.source_var.set(DEFAULT_SOURCE_WIDTH)
             self.debug_var.set(False)
 def main():

@@ -169,10 +169,10 @@ def load_or_init_config():
         fps = int(fps_in_file)
         src_w = int(source_width_in_file)
         debug = data.get("debug_mode", False)
-        
+
         global DEBUG_MODE
         DEBUG_MODE = debug
-        
+
         if DEBUG_MODE:
             log(f"Configuration Loaded from {CONFIG_PATH}")
             log(f"Eye zoom resolution: {w}x{h}+{x},{y}")
@@ -180,7 +180,7 @@ def load_or_init_config():
             log(f"Source width: {src_w}")
             log(f"Debug mode: {'Enabled' if debug else 'Disabled'}")
             log(f"You can change these values by running: xeyesee --settings\n")
-        
+
         return (w, h, x, y, fps, src_w)
 
     if geom and all(k in geom for k in ("zoom_w", "zoom_h", "zoom_x", "zoom_y")):
@@ -190,14 +190,14 @@ def load_or_init_config():
         y = int(geom.get("zoom_y", DEFAULT_ZOOM[3]))
         if DEBUG_MODE:
             print(f"Found existing eye zoom resolution in config: {w}x{h}+{x},{y}")
-        
+
 
 
     else:
         print("Please enter your resolution in the format WxH+X,Y")
         print("For example: 384x16384+768,-7652")
         print("  W = width (pixels)\n  H = height (pixels)\n  X = X offset (pixels)\n  Y = Y offset (pixels)\n")
-        
+
         while True:
             resp = input(f"Enter resolution (press Enter for default {DEFAULT_ZOOM[0]}x{DEFAULT_ZOOM[1]}+{DEFAULT_ZOOM[2]},{DEFAULT_ZOOM[3]}): ").strip()
             if not resp:
@@ -269,7 +269,7 @@ def load_or_init_config():
     if source_width == 30:
         print("="*70)
         print("IMPORTANT: For a more zoomed-in projector with source width 30,\nyou must generate a custom overlay with an overlay width of 30,\notherwise your measurements won't be accurate:")
-        print("  1. Go to: https://qmaxxen.github.io/overlay-gen/more-options/")
+        print("  1. Go to: https://qmaxxen.github.io/overlay-gen/")
         print("  2. Generate a custom overlay with 'Overlay width' set to 30")
         script_dir = os.path.dirname(os.path.abspath(__file__))
         print(f"  3. Download the overlay.png and place it in: {script_dir}")
@@ -278,8 +278,8 @@ def load_or_init_config():
         print("="*70)
         input("Press Enter to close...")
         sys.exit(0)
-    return w, h, x, y, int(fps), int(source_width)    
-        
+    return w, h, x, y, int(fps), int(source_width)
+
 
 TARGET_W, TARGET_H, TARGET_X, TARGET_Y, TARGET_FPS, TARGET_SOURCE_WIDTH = load_or_init_config()
 

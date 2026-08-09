@@ -53,7 +53,7 @@ A lightweight Python program that displays an eye measuring projector when you e
 - Zoom in further on the projector by setting the source width to `30`:
   - Run `xeyesee --settings`
   - Change `Source Width` to 30
-  - Go to: https://qmaxxen.github.io/overlay-gen/more-options/
+  - Go to: https://qmaxxen.github.io/overlay-gen/
   - Generate a custom overlay with 'Overlay width' set to 30
   - Download the `overlay.png` file and place it in the main xEyeSee folder. (Make sure it is named `overlay.png`)
   - Restart xEyeSee to apply the new overlay
