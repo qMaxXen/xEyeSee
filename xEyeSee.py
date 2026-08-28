@@ -1,16 +1,18 @@
-import sys
-import subprocess
-import re
-import os
-import json
-import shutil
-import tempfile
-import tarfile
 import datetime
+import json
+import os
+import re
+import shutil
+import signal
+import subprocess
+import sys
+import tarfile
+import tempfile
+
+import mss
 import numpy as np
 import requests
-import mss
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 DEBUG_MODE = False # Set to True to enable debug prints
 GEOMETRY_POLL_MS = 200 # how often to check Minecraft geometry (ms). Default is 0.2s (200 ms). Higher = lower cpu usage.
@@ -118,7 +120,7 @@ def check_and_update(current_version):
             print(body)
             print("-" * 40)
 
-        print(f"\n[Updater] Update completed. New version extracted to:")
+        print("\n[Updater] Update completed. New version extracted to:")
         print(f"    {folder_path}")
         print("\n[Updater] IMPORTANT: If you have a custom overlay, make sure to copy")
         print("          the overlay.png file from this directory to the new")
@@ -179,7 +181,7 @@ def load_or_init_config():
             log(f"Framerate: {fps} FPS")
             log(f"Source width: {src_w}")
             log(f"Debug mode: {'Enabled' if debug else 'Disabled'}")
-            log(f"You can change these values by running: xeyesee --settings\n")
+            log("You can change these values by running: xeyesee --settings\n")
 
         return (w, h, x, y, fps, src_w)
 
@@ -264,7 +266,7 @@ def load_or_init_config():
     print(f"\nEye zoom resolution saved to {CONFIG_PATH}: {w}x{h}+{x},{y}")
     print(f"Framerate saved: {fps} FPS")
     print(f"Source width saved: {source_width}")
-    print(f"You can change these values by running: xeyesee --settings\n")
+    print("You can change these values by running: xeyesee --settings\n")
 
     if source_width == 30:
         print("="*70)
@@ -285,6 +287,7 @@ TARGET_W, TARGET_H, TARGET_X, TARGET_Y, TARGET_FPS, TARGET_SOURCE_WIDTH = load_o
 
 if os.environ.get("XDG_SESSION_TYPE") == "wayland":
     print("ERROR: Wayland session detected. xEyeSee only works on X11.")
+    print("You are supposed to use waywall on wayland: https://its-saanvi.github.io/linux-mcsr/minecraft/wayland/waywall.html")
     input("Press Enter to close...")
     sys.exit(1)
 
@@ -293,7 +296,7 @@ print("To change settings, run xeyesee --settings")
 
 latest = check_for_update(APP_VERSION)
 if latest:
-    print(f"\n=== New Release Available! ===")
+    print("\n=== New Release Available! ===")
     print(f"Version: {latest}")
     print("You should update to the latest version!")
     print("1) Continue with the current version")
@@ -525,17 +528,9 @@ class MinecraftViewer(QtWidgets.QWidget):
         except Exception as e:
             log("Frame grab error:", e)
 
-    def closeEvent(self, event):
-        self.timer.stop()
-        self.window_poll_timer.stop()
-        self.sct.close()
-        event.accept()
-
-def main():
+if __name__ == "__main__":
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
     app = QtWidgets.QApplication(sys.argv)
     viewer = MinecraftViewer(0, 0, 100, 100, fps=TARGET_FPS)
     viewer.hide()
-    sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    main()
+    sys.exit(app.exec())
